@@ -25,9 +25,14 @@ const Navbar = () => {
               </button>
             </>
           ) : (
-            <Link className="btn btn-info m-2" to="/login">
-              Login
-            </Link>
+            <>
+              <Link className="btn btn-info m-2" to="/login">
+                Login
+              </Link>
+              <Link className="btn btn-info m-2" to="/signup">
+                Signup
+              </Link>
+            </>
           )}
         </div>
       </div>

@@ -37,7 +37,7 @@ const SignupForm = () => {
           <input
             placeholder="Your username"
             name="username"
-            type="username"
+            type="text"
             id="username"
             value={formState.username}
             onChange={handleChange}
@@ -67,9 +67,7 @@ const SignupForm = () => {
         </div>
         {error && <div><p className="error-text">The provided credentials are incorrect</p></div>}
         <div className="flex-row flex-end">
-          <button type="submit">
-            Submit
-          </button>
+          <button type="submit">Submit</button>
         </div>
       </form>
     </div>
