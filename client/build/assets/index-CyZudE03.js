@@ -161,7 +161,7 @@ this in the docs: http://dev.apollodata.com/core/fragments.html#unique-names`):a
     }
   }
 `,Z1=wt`
-  mutation removeBook($bookId: String!) {
+  mutation removeBook($bookId: ID!) {
     removeBook(bookId: $bookId) {
       _id
       username
