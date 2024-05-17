@@ -16,9 +16,7 @@ const server = new ApolloServer({
 });
 
 async function startServer() {
-  // Start the Apollo Server
   await server.start();
-  // Apply middleware to the Express app
   server.applyMiddleware({ app });
 
   app.use(express.urlencoded({ extended: true }));
@@ -32,6 +30,10 @@ async function startServer() {
     app.get('*', (req, res) => {
       res.sendFile(path.join(__dirname, '../client/build/index.html'));
     });
+  } else {
+    app.get('/', (req, res) => {
+      res.send('API Running');
+    });
   }
 
   // Start the server after connecting to the database
@@ -43,5 +45,4 @@ async function startServer() {
   });
 }
 
-// Call the startServer function to start the server
 startServer();
