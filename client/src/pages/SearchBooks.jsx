@@ -44,24 +44,25 @@ const SearchBooks = () => {
 
   const handleSaveBook = async (bookId) => {
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
-
+  
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-
+  
     if (!token) {
       return false;
     }
-
+  
     try {
       await saveBook({
-        variables: { ...bookToSave },
+        variables: { bookData: { ...bookToSave } },
       });
-
+  
       // If book successfully saves to user's account, remove it from search results
       setSearchedBooks(searchedBooks.filter((book) => book.bookId !== bookId));
     } catch (err) {
       console.error(err);
     }
   };
+  
 
   return (
     <Container>
