@@ -49,6 +49,12 @@ To install and run this application locally, follow these steps:
 
 Once the server is running, open your browser and navigate to http://localhost:3001 to use the application. You can search for books, sign up for an account, save books to your account, and view your saved books.
 
+<img src="/client/src/assets/homenotloggedin.png" alt="Home Logged Out" width="600" height="auto">
+<img src="/client/src/assets/login.png" alt="Login" width="600" height="auto">
+<img src="/client/src/assets/userbooks.png" alt="Dashboard User's Books" width="600" height="auto">
+<img src="/client/src/assets/booksearch.png" alt="Book Search" width="600" height="auto">
+<img src="/client/src/assets/booksearchresults.png" alt="Book Search Results" width="600" height="auto">
+
 ## Dependencies 
 
 - [React](https://reactjs.org/): A JavaScript library for building user interfaces.
