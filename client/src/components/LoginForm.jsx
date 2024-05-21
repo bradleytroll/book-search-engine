@@ -1,14 +1,15 @@
-// see SignupForm.js for comments
 import { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
-
-import { loginUser } from '../utils/API';
+import { useMutation } from '@apollo/client';
+import { LOGIN_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 const LoginForm = () => {
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+
+  const [login] = useMutation(LOGIN_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -18,7 +19,6 @@ const LoginForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // check if form has everything (as per react-bootstrap docs)
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -26,22 +26,17 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await loginUser(userFormData);
+      const { data } = await login({
+        variables: { ...userFormData },
+      });
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
-      const { token, user } = await response.json();
-      console.log(user);
-      Auth.login(token);
+      Auth.login(data.login.token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);
     }
 
     setUserFormData({
-      username: '',
       email: '',
       password: '',
     });
@@ -81,7 +76,8 @@ const LoginForm = () => {
         <Button
           disabled={!(userFormData.email && userFormData.password)}
           type='submit'
-          variant='success'>
+          variant='success'
+        >
           Submit
         </Button>
       </Form>
@@ -90,3 +86,73 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+
+
+// import React, { useState } from 'react';
+// import { useMutation } from '@apollo/client';
+// import { LOGIN_USER } from '../utils/mutations';
+// import Auth from '../utils/auth';
+
+// const LoginForm = () => {
+//   const [formState, setFormState] = useState({ email: '', password: '' });
+//   const [login, { error }] = useMutation(LOGIN_USER);
+
+//   const handleChange = (event) => {
+//     const { name, value } = event.target;
+//     setFormState({
+//       ...formState,
+//       [name]: value,
+//     });
+//   };
+
+//   const handleFormSubmit = async (event) => {
+//     event.preventDefault();
+//     try {
+//       const { data } = await login({
+//         variables: { ...formState },
+//       });
+
+//       Auth.login(data.login.token);
+//     } catch (e) {
+//       console.error(e);
+//     }
+//   };
+
+//   return (
+//     <div className="container my-1">
+//       <h2>Login</h2>
+//       <form onSubmit={handleFormSubmit}>
+//         <div className="flex-row space-between my-2">
+//           <label htmlFor="email">Email address:</label>
+//           <input
+//             placeholder="youremail@test.com"
+//             name="email"
+//             type="email"
+//             id="email"
+//             value={formState.email}
+//             onChange={handleChange}
+//           />
+//         </div>
+//         <div className="flex-row space-between my-2">
+//           <label htmlFor="password">Password:</label>
+//           <input
+//             placeholder="******"
+//             name="password"
+//             type="password"
+//             id="password"
+//             value={formState.password}
+//             onChange={handleChange}
+//           />
+//         </div>
+//         {error && <div><p className="error-text">The provided credentials are incorrect</p></div>}
+//         <div className="flex-row flex-end">
+//           <button type="submit">
+//             Submit
+//           </button>
+//         </div>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default LoginForm;
