@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const { ApolloServer } = require('apollo-server-express');
@@ -16,11 +17,15 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')));
 }
 
+// Start Apollo Server
 const startServer = async () => {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({ req }) => ({ req, authMiddleware }),
+    context: ({ req }) => {
+      authMiddleware(req, {}, () => {});
+      return { req };
+    },
   });
 
   await server.start();
@@ -34,4 +39,10 @@ const startServer = async () => {
 
 startServer();
 
+// Use API routes
 app.use(routes);
+
+// Catchall handler to serve React's index.html file for any other routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
